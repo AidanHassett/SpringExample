@@ -1,39 +1,67 @@
 package com.qa.animal.service;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.NoSuchElementException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.qa.animal.domain.Animal;
+import com.qa.animal.repo.AnimalRepo;
 
 @Service
 public class AnimalService {
-	private Map<Integer, Animal> animals = new TreeMap<Integer, Animal>();
+	
+	private AnimalRepo animals;
+	
+	@Autowired
+	public AnimalService(AnimalRepo repo) {
+		this.animals = repo;
+	}
 	
 	public boolean createAnimal(Animal inAnimal) {
-		if (animals.containsKey(inAnimal.getId())) {
+		if (animals.existsById(inAnimal.getId())) {
 			return false;
 		} else {
-			this.animals.put(inAnimal.getId(), inAnimal);
+			this.animals.save(inAnimal);
 			return true;
 		}
 	}
 	
 	public Collection<Animal> getAllAnimals() {
-		return this.animals.values();
+		return this.animals.findAll();
 	}
 	
 	public Animal getAnimal(Integer id) {
-		return animals.get(id);
+		try {
+			return animals.findById(id).get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 	
-	public Animal replaceAnimal(Animal inAnimal) {
-		return this.animals.put(inAnimal.getId(), inAnimal);
+	public boolean replaceAnimal(Animal inAnimal) {
+		Animal existing;
+		boolean exists;
+		try {
+			existing = this.animals.findById(inAnimal.getId()).get();
+			existing.setAge(inAnimal.getAge());
+			existing.setName(inAnimal.getName());
+			exists = true;
+		} catch (NoSuchElementException e) {
+			existing = new Animal(inAnimal);
+			exists = false;
+		}
+		this.animals.save(existing);
+		return exists;
 	}
 	
-	public Animal removeAnimal(Integer id) {
-		return this.animals.remove(id);
+	public boolean removeAnimal(Integer id) {
+		if (this.animals.existsById(id)) {
+			this.animals.deleteById(id);
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

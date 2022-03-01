@@ -2,6 +2,7 @@ package com.qa.animal.web;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +20,13 @@ import com.qa.animal.service.AnimalService;
 
 public class AnimalController {
 	
-	AnimalService animalService = new AnimalService();
+	AnimalService animalService;
+	
+	@Autowired
+	public AnimalController(AnimalService serv) {
+		super();
+		this.animalService = serv;
+	}
 	
 	@GetMapping("/helloWorld")
 	public String hello() {
@@ -56,24 +63,22 @@ public class AnimalController {
 	}
 	
 	@PutMapping("/replace/{id}")
-	public ResponseEntity<Animal> replaceAnimal(@PathVariable Integer id, @RequestBody Animal inAnimal) {
-		Animal an = this.animalService.replaceAnimal(inAnimal);
+	public ResponseEntity<?> replaceAnimal(@PathVariable Integer id, @RequestBody Animal inAnimal) {
 		HttpStatus status;
-		if (an == null) {
-			status = HttpStatus.CREATED;
-		} else {
+		if (this.animalService.replaceAnimal(inAnimal)) {
 			status = HttpStatus.OK;
+		} else {
+			status = HttpStatus.CREATED;
 		}
-		return new ResponseEntity<Animal>(an, status);
+		return new ResponseEntity<>(status);
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteAnimal(@PathVariable Integer id) {
-		Animal an = this.animalService.removeAnimal(id);
-		if (an == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
+		if (this.animalService.removeAnimal(id)) {
 			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 }
