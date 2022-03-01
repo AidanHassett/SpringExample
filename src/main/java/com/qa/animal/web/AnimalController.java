@@ -35,14 +35,8 @@ public class AnimalController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<Animal> createAnimal(@RequestBody Animal inAnimal) {
-		HttpStatus status;
-		if (this.animalService.createAnimal(inAnimal)) {
-			status = HttpStatus.CREATED;
-		} else {
-			status = HttpStatus.CONFLICT;
-		}
-		Animal an = this.animalService.getAnimal(inAnimal.getId());
-		return new ResponseEntity<Animal>(an, status);
+		Animal an = this.animalService.createAnimal(inAnimal);
+		return new ResponseEntity<Animal>(an, HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/getAll")

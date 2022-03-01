@@ -19,13 +19,8 @@ public class AnimalService {
 		this.animals = repo;
 	}
 	
-	public boolean createAnimal(Animal inAnimal) {
-		if (animals.existsById(inAnimal.getId())) {
-			return false;
-		} else {
-			this.animals.save(inAnimal);
-			return true;
-		}
+	public Animal createAnimal(Animal inAnimal) {
+		return this.animals.save(inAnimal);
 	}
 	
 	public Collection<Animal> getAllAnimals() {
