@@ -35,6 +35,14 @@ public class AnimalService {
 		}
 	}
 	
+	public Collection<Animal> getAnimalsByName(String name) {
+		return animals.findByNameIgnoreCase(name);
+	}
+	
+	public Collection<Animal> getAnimalsByAge(Integer age) {
+		return animals.findByAge(age);
+	}
+	
 	public boolean replaceAnimal(Animal inAnimal) {
 		Animal existing;
 		boolean exists;

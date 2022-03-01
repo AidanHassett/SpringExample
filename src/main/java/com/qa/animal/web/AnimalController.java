@@ -56,6 +56,16 @@ public class AnimalController {
 		return new ResponseEntity<Animal>(an, status);
 	}
 	
+	@GetMapping("/getByName/{name}")
+	public ResponseEntity<Collection<Animal>> getByName(@PathVariable String name) {
+		return ResponseEntity.ok(this.animalService.getAnimalsByName(name));
+	}
+	
+	@GetMapping("/getByAge/{age}")
+	public ResponseEntity<Collection<Animal>> getByAge(@PathVariable Integer age) {
+		return ResponseEntity.ok(this.animalService.getAnimalsByAge(age));
+	}
+	
 	@PutMapping("/replace/{id}")
 	public ResponseEntity<?> replaceAnimal(@PathVariable Integer id, @RequestBody Animal inAnimal) {
 		HttpStatus status;
