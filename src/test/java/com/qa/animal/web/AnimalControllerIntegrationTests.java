@@ -77,11 +77,9 @@ public class AnimalControllerIntegrationTests {
 	@Test
 	void testGetNonExistent() throws Exception {
 		RequestBuilder req = get("/get/0");
-		String testAnimalJSON = "";
 		ResultMatcher checkStatus = status().isNotFound();
-		ResultMatcher checkBody = content().string(testAnimalJSON);
 		
-		this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
+		this.mvc.perform(req).andExpect(checkStatus);
 	}
 	
 	@Test
@@ -113,9 +111,8 @@ public class AnimalControllerIntegrationTests {
 		RequestBuilder req = put("/replace").contentType(MediaType.APPLICATION_JSON).content(testAnimalJSON);
 		
 		ResultMatcher checkStatus = status().isOk();
-		ResultMatcher checkBody = content().string("");
 		
-		this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
+		this.mvc.perform(req).andExpect(checkStatus);
 	}
 	
 	@Test
@@ -125,9 +122,8 @@ public class AnimalControllerIntegrationTests {
 		RequestBuilder req = put("/replace").contentType(MediaType.APPLICATION_JSON).content(testAnimalJSON);
 		
 		ResultMatcher checkStatus = status().isCreated();
-		ResultMatcher checkBody = content().string("");
 		
-		this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
+		this.mvc.perform(req).andExpect(checkStatus);
 	}
 	
 	@Test
@@ -145,8 +141,7 @@ public class AnimalControllerIntegrationTests {
 		RequestBuilder req = delete("/delete/0");
 		
 		ResultMatcher checkStatus = status().isNotFound();
-		ResultMatcher checkBody = content().string("");
 		
-		this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
+		this.mvc.perform(req).andExpect(checkStatus);
 	}
 }
