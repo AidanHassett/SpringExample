@@ -66,8 +66,8 @@ public class AnimalController {
 		return ResponseEntity.ok(this.animalService.getAnimalsByAge(age));
 	}
 	
-	@PutMapping("/replace/{id}")
-	public ResponseEntity<?> replaceAnimal(@PathVariable Integer id, @RequestBody Animal inAnimal) {
+	@PutMapping("/replace")
+	public ResponseEntity<?> replaceAnimal(@RequestBody Animal inAnimal) {
 		HttpStatus status;
 		if (this.animalService.replaceAnimal(inAnimal)) {
 			status = HttpStatus.OK;
@@ -80,7 +80,7 @@ public class AnimalController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteAnimal(@PathVariable Integer id) {
 		if (this.animalService.removeAnimal(id)) {
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
