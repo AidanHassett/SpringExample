@@ -10,7 +10,7 @@ import com.qa.animal.domain.Animal;
 import com.qa.animal.repo.AnimalRepo;
 
 @Service
-public class AnimalService {
+public class AnimalService implements ServiceInterface<Animal>{
 	
 	private AnimalRepo animals;
 	
@@ -19,15 +19,15 @@ public class AnimalService {
 		this.animals = repo;
 	}
 	
-	public Animal createAnimal(Animal inAnimal) {
+	public Animal create(Animal inAnimal) {
 		return this.animals.save(inAnimal);
 	}
 	
-	public Collection<Animal> getAllAnimals() {
+	public Collection<Animal> getAll() {
 		return this.animals.findAll();
 	}
 	
-	public Animal getAnimal(Integer id) {
+	public Animal get(Integer id) {
 		try {
 			return animals.findById(id).get();
 		} catch (NoSuchElementException e) {
@@ -35,15 +35,15 @@ public class AnimalService {
 		}
 	}
 	
-	public Collection<Animal> getAnimalsByName(String name) {
+	public Collection<Animal> getByName(String name) {
 		return animals.findByNameIgnoreCase(name);
 	}
 	
-	public Collection<Animal> getAnimalsByAge(Integer age) {
+	public Collection<Animal> getByAge(Integer age) {
 		return animals.findByAge(age);
 	}
 	
-	public boolean replaceAnimal(Animal inAnimal) {
+	public boolean replace(Animal inAnimal) {
 		Animal existing;
 		boolean exists;
 		try {
@@ -59,7 +59,7 @@ public class AnimalService {
 		return exists;
 	}
 	
-	public boolean removeAnimal(Integer id) {
+	public boolean remove(Integer id) {
 		if (this.animals.existsById(id)) {
 			this.animals.deleteById(id);
 			return true;

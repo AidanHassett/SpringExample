@@ -18,7 +18,7 @@ import com.qa.animal.service.AnimalService;
 
 @RestController
 
-public class AnimalController {
+public class AnimalController{
 	
 	AnimalService animalService;
 	
@@ -35,18 +35,18 @@ public class AnimalController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<Animal> createAnimal(@RequestBody Animal inAnimal) {
-		Animal an = this.animalService.createAnimal(inAnimal);
+		Animal an = this.animalService.create(inAnimal);
 		return new ResponseEntity<Animal>(an, HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/getAll")
 	public ResponseEntity<Collection<Animal>> getAll() {
-		return ResponseEntity.ok(this.animalService.getAllAnimals());
+		return ResponseEntity.ok(this.animalService.getAll());
 	}
 	
 	@GetMapping("/get/{id}")
 	public ResponseEntity<Animal> getAnimal(@PathVariable Integer id) {
-		Animal an = this.animalService.getAnimal(id);
+		Animal an = this.animalService.get(id);
 		HttpStatus status;
 		if (an == null) {
 			status = HttpStatus.NOT_FOUND;
@@ -58,18 +58,18 @@ public class AnimalController {
 	
 	@GetMapping("/getByName/{name}")
 	public ResponseEntity<Collection<Animal>> getByName(@PathVariable String name) {
-		return ResponseEntity.ok(this.animalService.getAnimalsByName(name));
+		return ResponseEntity.ok(this.animalService.getByName(name));
 	}
 	
 	@GetMapping("/getByAge/{age}")
 	public ResponseEntity<Collection<Animal>> getByAge(@PathVariable Integer age) {
-		return ResponseEntity.ok(this.animalService.getAnimalsByAge(age));
+		return ResponseEntity.ok(this.animalService.getByAge(age));
 	}
 	
 	@PutMapping("/replace")
 	public ResponseEntity<?> replaceAnimal(@RequestBody Animal inAnimal) {
 		HttpStatus status;
-		if (this.animalService.replaceAnimal(inAnimal)) {
+		if (this.animalService.replace(inAnimal)) {
 			status = HttpStatus.OK;
 		} else {
 			status = HttpStatus.CREATED;
@@ -79,7 +79,7 @@ public class AnimalController {
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteAnimal(@PathVariable Integer id) {
-		if (this.animalService.removeAnimal(id)) {
+		if (this.animalService.remove(id)) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
